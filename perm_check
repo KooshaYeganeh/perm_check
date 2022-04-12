@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 
-username=`whoami`
+username=`whoami` # get Username of system
 
 
 echo "System Start check Directories.Please wait ..."
@@ -11,13 +11,13 @@ FILE=/home/$username/perm_check/perm_check.db
 
 
 
-if test -d "$PATH";then
+if test -d "$PATH";then # check path and if not exist create 
 	true
 else
 	mkdir /home/$username/perm_check
 fi
 
-if test -f "$FILE";then
+if test -f "$FILE";then # check File and if not exists create
 	first
 else
 	seccond
@@ -29,7 +29,7 @@ fi
 first(){
 
 	first=`cat permissions.db`
-	new=`find / -type f -exec ls -la {} \; | grep -v /home | awk '{print $1}' | cut -d"." -f1`
+	new=`find / -type f -exec ls -la {} \; | grep -v /home | awk '{print $1}' | cut -d"." -f1` # check all system grep /home directory
 
 
 	if [ "$first" == "$new" ];then
@@ -44,7 +44,7 @@ first(){
 
 seccond(){
 	echo "First Time you are runnig app so please wait to create database "
-	find / -type f -exec ls -la {} \; | grep -v /home | awk '{print $1}' | cut -d"." -f1 > /home/$username/perm_check/permissions.db
+	find / -type f -exec ls -la {} \; | grep -v /home | awk '{print $1}' | cut -d"." -f1 > /home/$username/perm_check/permissions.db # create permissions of directories
 	echo "Database created in /home/$username/perm_check/permissions.db"
 
 }
