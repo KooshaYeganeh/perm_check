@@ -1,0 +1,50 @@
+#!/usr/bin/bash
+
+
+username=`whoami`
+
+
+echo "System Start check Directories.Please wait ..."
+
+PATH=/home/$username/perm_check
+FILE=/home/$username/perm_check/perm_check.db
+
+
+
+if test -d "$PATH";then
+	true
+else
+	mkdir /home/$username/perm_check
+fi
+
+if test -f "$FILE";then
+	first
+else
+	seccond
+
+fi
+
+
+
+first(){
+
+	first=`cat permissions.db`
+	new=`find / -type f -exec ls -la {} \; | grep -v /home | awk '{print $1}' | cut -d"." -f1`
+
+
+	if [ "$first" == "$new" ];then
+		echo "permissions [ OK ]"
+	else
+		echo "[ !!! ERROR !!! ] on permissions"
+	fi
+
+}
+
+
+
+seccond(){
+	echo "First Time you are runnig app so please wait to create database "
+	find / -type f -exec ls -la {} \; | grep -v /home | awk '{print $1}' | cut -d"." -f1 > /home/$username/perm_check/permissions.db
+	echo "Database created in /home/$username/perm_check/permissions.db"
+
+}
