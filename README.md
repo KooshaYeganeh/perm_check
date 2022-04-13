@@ -4,7 +4,9 @@ This app check permissions of system create database of Files
 
 # Info
 
-This app check permisions of all system and create Database if You Running for first Time and for seccond time comppare database with Previos Version
+This app check permisions of all system and create Database.
+if You Running for first Time create database .
+for Running Seccond time compare database with Previos Version.
 
 
 # Install
