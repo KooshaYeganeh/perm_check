@@ -28,13 +28,13 @@ unzip main.zip
 cd perm_check-main
 ```
 ```
-sudo mv perm_check /usr/bin
+sudo mv permcheck /usr/bin
 ```
 
 ## Run
 
 ```
-perm_check
+permcheck
 ```
 
 
