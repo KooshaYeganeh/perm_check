@@ -1,50 +1,39 @@
 #!/usr/bin/bash
 
+username=$(whoami) # get Username of system
 
-username=`whoami` # get Username of system
+echo "System Start check Directories. Please wait ..."
 
+PATH_DIR="/home/$username/perm_check"  # Changed variable name - PATH is a reserved system variable
+FILE="/home/$username/perm_check/perm_check.db"
 
-echo "System Start check Directories.Please wait ..."
-
-PATH=/home/$username/perm_check
-FILE=/home/$username/perm_check/perm_check.db
-
-
-
-if test -d "$PATH";then # check path and if not exist create 
-	true
-else
-	mkdir /home/$username/perm_check
-fi
-
-if test -f "$FILE";then # check File and if not exists create
-	first
-else
-	seccond
-
-fi
-
-
-
-first(){
-
-	first=`cat permissions.db`
-	new=`find / -type f -exec ls -la {} \; | grep -v /home | awk '{print $1}' | cut -d"." -f1` # check all system grep /home directory
-
-
-	if [ "$first" == "$new" ];then
-		echo "permissions [ OK ]"
-	else
-		echo "[ !!! ERROR !!! ] on permissions"
-	fi
-
+# Function definitions must come before they're called
+first() {
+    first_content=$(cat /home/$username/perm_check/permissions.db 2>/dev/null)
+    new=$(find / -type f -exec ls -la {} \; 2>/dev/null | grep -v /home | awk '{print $1}' | cut -d"." -f1)
+    
+    if [ "$first_content" == "$new" ]; then
+        echo "permissions [ OK ]"
+    else
+        echo "[ !!! ERROR !!! ] on permissions"
+    fi
 }
 
-
-
-seccond(){
-	echo "First Time you are runnig app so please wait to create database "
-	find / -type f -exec ls -la {} \; | grep -v /home | awk '{print $1}' | cut -d"." -f1 > /home/$username/perm_check/permissions.db # create permissions of directories
-	echo "Database created in /home/$username/perm_check/permissions.db"
-
+second() {  # Fixed typo: seccond -> second
+    echo "First Time you are running app so please wait to create database"
+    find / -type f -exec ls -la {} \; 2>/dev/null | grep -v /home | awk '{print $1}' | cut -d"." -f1 > /home/$username/perm_check/permissions.db
+    echo "Database created in /home/$username/perm_check/permissions.db"
 }
+
+# Main script execution
+if [ -d "$PATH_DIR" ]; then  # check path and if not exist create
+    true
+else
+    mkdir -p "/home/$username/perm_check"
+fi
+
+if [ -f "$FILE" ]; then  # check File and if not exists create
+    first
+else
+    second  # Fixed function name
+fi
